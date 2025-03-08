@@ -233,6 +233,7 @@ class AnggotaController extends Controller
 
             $anggota->save();
 
+
             \Log::info($anggota);
 
             $log = new LogAnggota();
