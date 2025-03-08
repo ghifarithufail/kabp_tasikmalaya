@@ -59,7 +59,7 @@
                                 <td>{{ $data->email }}</td>
                                 <td>{{ $data->partais->nama }}</td>
                                 <td>{{ $data->username }}</td>
-                                <td>{{ $data->listKelurahan->nama_kelurahan }}</td>
+                                <td>{{ $data->listKelurahan ? $data->listKelurahan->nama_kelurahan : '-' }}</td>
                                 <td><span
                                         class="badge @if ($data->status == 1) bg-label-success @else bg-label-danger @endif  me-1">{{ \App\Models\User::STATUS[$data->status] }}</span>
                                 </td>
