@@ -172,8 +172,8 @@ class KorcamController extends Controller
         $validatedData = $request->validate([
             'nik' => 'required|unique:korcams,nik,' . $id,
             'nama' => 'required',
-            'kabkota_id' => 'required',
-            'alamat' => 'required',
+            'kabkota_id' => 'nullable',
+            'alamat' => 'nullable',
             'rt' => 'required',
             'rw' => 'required',
             'kecamatan_id' => 'required',
