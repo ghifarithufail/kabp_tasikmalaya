@@ -174,13 +174,16 @@ class AgentTpsController extends Controller
      */
     public function edit($id)
     {
-        $agent = AgentTps::with(['tps_pivot', 'partais', 'kelurahans'])->findOrFail($id);
+        $agent = AgentTps::with(['tps_pivot', 'partais', 'kelurahans' => function($kelurahan){
+            $kelurahan->with(['kabkotas']);
+        }])->findOrFail($id);
         $tps = Tps::orderBy('tps', 'asc')->get();
         $partai = Partai::orderBy('nama', 'asc')->get();
 
         // Load kelurahans associated with tps using eager loading
         $kelurahans = Kelurahan::whereIn('id', $tps->pluck('kelurahan_id'))->get()->keyBy('id');
 
+        // dd($agent);
         return view('layouts.agent_tps.edit', [
             'agent' => $agent,
             'partai' => $partai,
@@ -463,7 +466,7 @@ class AgentTpsController extends Controller
 
             // ->with('kabkotas', 'tps', 'koordinators')
             ->where('deleted', '0')->get();
-            
+
             $anggota_gagal = Anggota::where('agent_id', $id)
             ->where('tps_id', $tps)
             ->where('verified', '2')

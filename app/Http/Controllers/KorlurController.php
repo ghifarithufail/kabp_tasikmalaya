@@ -152,10 +152,10 @@ class KorlurController extends Controller
 
     public function edit($id)
     {
-        $korlur = Korlur::find($id);
+        $korlur = Korlur::find($id)->load(['kabkotas']);
         $korcam = Korcam::orderBy('nama','asc')->get();
         $partai = Partai::orderBy('nama','asc')->get();
-        
+
 
         return view('layouts.korlur.edit',[
             'korlur' => $korlur,
@@ -261,7 +261,7 @@ class KorlurController extends Controller
     public function destroy($id)
     {
         $korlur = Korlur::find($id);
-        
+
         $korlur->deleted = "1";
         $korlur->save();
 
@@ -365,7 +365,7 @@ class KorlurController extends Controller
     }
 
     public function general_excel(){
-        
+
         return Excel::download(new KorlurGeneralExport(), 'korAgenGeneral.xlsx');
     }
 
