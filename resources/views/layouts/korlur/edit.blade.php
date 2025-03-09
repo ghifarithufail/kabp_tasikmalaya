@@ -42,7 +42,9 @@
                     <div class="col-md-6">
                         <label for="exampleFormControlSelect1" class="form-label">Kota Lahir</label>
                         <select class="form-select" name="kabkota_id" id="kabkota_id" required>
-                            <option value="{{ $korlur->kabkota_id }}" selected>{{ old('kabkota_id', $korlur->kabkotas->nama) }} </option>
+                            @if($korlur->kabkotas)
+                                <option value="{{ $korlur->kabkota_id }}" selected>{{ old('kabkota_id', $korlur->kabkotas->nama) }} </option>
+                            @endif
                         </select>
                         @error('kabkota_id')
                             <div class="text-danger">{{ $message }}</div>
@@ -234,7 +236,7 @@
                             results: $.map(data, function(item) {
                                 return {
                                     id: item.id,
-                                    text: item.tps + ' - ' + item.kelurahans.nama_kelurahan + ' - ' + item.kelurahans.kecamatans.nama 
+                                    text: item.tps + ' - ' + item.kelurahans.nama_kelurahan + ' - ' + item.kelurahans.kecamatans.nama
                                 }
                             })
                         };

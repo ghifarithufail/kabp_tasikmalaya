@@ -63,7 +63,11 @@
                     <div class="col-md-6">
                         <label for="exampleFormControlSelect1" class="form-label">Kota Lahir</label>
                         <select class="form-select" name="kabkota_id" id="kabkota_id" required>
-                            <option value="{{ $agent->kabkota_id }}" selected>{{ old('kabkota_id', $agent->kabkotas->nama) }} </option>
+                            @if($agent->kabkotas)
+                                <option value="{{ $agent->kabkota_id }}" selected>{{ old('kabkota_id', $agent->kabkotas->nama) }} </option>
+                            @else
+                                <option value="{{ $agent->kabkota_id }}" selected>{{ old('kabkota_id', $agent->kelurahans->kabkotas->nama) }} </option>
+                            @endif
 
                         </select>
                         @error('kabkota_id')
