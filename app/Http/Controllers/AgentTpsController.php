@@ -115,8 +115,8 @@ class AgentTpsController extends Controller
         $validatedData = $request->validate([
             'nik' => 'required|unique:agent_tps,nik|numeric|digits:16',
             'nama' => 'required',
-            'kabkota_id' => 'required',
-            'alamat' => 'required',
+            'kabkota_id' => 'nullable',
+            'alamat' => 'nullable',
             'rt' => 'required',
             'rw' => 'required',
             'kelurahan_id' => 'required',
@@ -124,7 +124,7 @@ class AgentTpsController extends Controller
             'phone' => 'required',
             'status' => 'required',
             'keterangan' => 'nullable',
-            'tgl_lahir' => 'required',
+            'tgl_lahir' => 'nullable',
             'partai_id' => 'required',
             'deleted' => 'nullable',
         ], [

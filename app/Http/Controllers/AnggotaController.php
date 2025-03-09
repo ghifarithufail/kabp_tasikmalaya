@@ -186,17 +186,17 @@ class AnggotaController extends Controller
         $validatedData = $request->validate([
             'nik' => 'required|unique:anggotas,nik|numeric|digits:16',
             'nama' => 'required',
-            'kabkota_id' => 'required',
-            'alamat' => 'required',
+            'kabkota_id' => 'nullable',
+            'alamat' => 'nullable',
             'rt' => 'required',
             'rw' => 'required',
             'jenis_kelamin' => 'required',
-            'usia' => 'required',
+            'usia' => 'nullable',
             'agent_id' => 'required',
             'phone' => 'required',
             'status' => 'required',
             'keterangan' => 'nullable',
-            'tgl_lahir' => 'required',
+            'tgl_lahir' => 'nullable',
             'tps_id' => 'required',
             'deleted' => 'nullable',
         ], [
@@ -320,15 +320,7 @@ class AnggotaController extends Controller
 
         $anggota->update($validatedData);
 
-        $verifikasi = Dpt::where('tps', $anggota->tps->tps)
-        ->where('kelurahan', $anggota->tps->kelurahans->nama_kelurahan)
-        ->where('nama', 'like', '%' . $anggota->nama . '%')
-        ->where('rt', $anggota->rt)
-        ->where('rw', $anggota->rw)
-        ->where('usia', $anggota->usia)
-        ->where('jenis', $anggota->jenis_kelamin)
-        ->where('dapil', "Dapil ".$anggota->tps->kelurahans->dapil)
-        ->first();
+        $verifikasi = Dpt::where('nik', $anggota->nik)->first();
 
         if ($verifikasi) {
             $anggota->verified = '1';

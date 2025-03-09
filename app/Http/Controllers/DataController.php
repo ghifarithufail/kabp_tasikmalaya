@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AgentTps;
 use App\Models\Calon;
+use App\Models\Dpt;
 use App\Models\Kabkota;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -199,5 +200,10 @@ class DataController extends Controller
     {
         $suaraCalon = PerolehanSuara::where('caleg_id', '=', $request->calon)->where('tps_id', '=', $request->tpsId)->get();
         return response()->json($suaraCalon);
+    }
+
+    public function getDpt(Request $request){
+        $dpt = Dpt::where('nik', $request->nik)->first();
+        return response()->json($dpt);
     }
 }

@@ -28,8 +28,17 @@
                     @csrf
                     <div class="row g-3">
                         <div class="col-md-6">
+                            <label class="form-label" for="nik">NIK</label>
+                            <input type="number" name="nik" value="{{ old('nik') }}"
+                                id="nik" oninput="extractDateAndCalculateAge()" class="form-control"
+                                placeholder="Masukan NIK" />
+                            @error('nik')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
                             <label class="form-label" for="name">Nama</label>
-                            <input type="text" name="nama" value="{{ old('nama') }}" id="bs-validation-name"
+                            <input type="text" name="nama" value="{{ old('nama') }}" id="nama"
                                 class="form-control" placeholder="Masukan Nama" />
                             @error('nama')
                                 <div class="text-danger">{{ $message }}</div>
@@ -38,47 +47,6 @@
                         {{-- @php
                             dd(Auth()->user()->kelurahan_id)
                         @endphp --}}
-                        <div class="col-md-6">
-                            <label class="form-label" for="phone">Telepon</label>
-                            <input type="number" name="phone" value="{{ old('phone') }}" id="phone"
-                                class="form-control" placeholder="Masukan No telpon" />
-                            @error('phone')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="nik">NIK</label>
-                            <input type="number" name="nik" value="{{ old('nik') }}"
-                                id="nik"oninput="extractDateAndCalculateAge()" class="form-control"
-                                placeholder="Masukan NIK" />
-                            @error('nik')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="name">Tanggal Lahir</label>
-                            <input type="date" name="tgl_lahir" value="{{ old('tgl_lahir') }}" id="tanggal_lahir"
-                                class="form-control" placeholder="Masukan Nama" required />
-                            @error('tgl_lahir')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label for="exampleFormControlSelect1" class="form-label">Kota Lahir</label>
-                            <select class="form-select" name="kabkota_id" id="kabkota_id">
-                            </select>
-                            @error('kabkota_id')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="multicol-username">Alamat</label>
-                            <input type="text" name="alamat" value="{{ old('alamat') }}" id="multicol-username"
-                                class="form-control" placeholder="alamat" />
-                            @error('alamat')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
                         <div class="col-md-6">
                             <label class="form-label" for="multicol-username">Jenis Kelamin</label>
                             <select class="form-select" name="jenis_kelamin" id="jenis_kelamin"
@@ -92,16 +60,8 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label" for="multicol-username">Usia</label>
-                            <input type="number" value="{{ old('usia') }}" id="usia" name="usia"
-                                class="form-control" placeholder="usia" />
-                            @error('usia')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-md-6">
                             <label class="form-label" for="multicol-username">RT</label>
-                            <input type="number" name="rt" value="{{ old('rt') }}" id="multicol-username"
+                            <input type="number" name="rt" value="{{ old('rt') }}" id="rt"
                                 class="form-control" placeholder="Rt" />
                             @error('rt')
                                 <div class="text-danger">{{ $message }}</div>
@@ -109,9 +69,17 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="multicol-username">RW</label>
-                            <input type="number" value="{{ old('rw') }}" name="rw" id="multicol-username"
+                            <input type="number" value="{{ old('rw') }}" name="rw" id="rw"
                                 class="form-control" placeholder="RW" />
                             @error('rw')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="phone">Telepon</label>
+                            <input type="number" name="phone" value="{{ old('phone') }}" id="phone"
+                                class="form-control" placeholder="Masukan No telpon" />
+                            @error('phone')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -135,8 +103,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="multicol-username">Status</label>
-                            <select class="form-select" name="status" id="status"
-                                aria-label="Default select example" required>
+                            <select class="form-select" name="status" id="status" aria-label="Default select example"
+                                required>
                                 <option selected disabled>{{ old('status', 'Pilih Status') }}</option>
                                 <option value="1">Aktif</option>
                                 <option value="2">Non Aktif</option>
@@ -165,6 +133,34 @@
             $(document).ready(function() {
                 hideLoading();
                 $('#status').select2();
+            });
+
+            $(document).ready(function() {
+                $('#nik').on('input', function() {
+                    var nik = $(this).val();
+
+                    if (nik.length >= 5) { // Minimal 5 karakter untuk mulai mencari
+                        $.ajax({
+                            url: "/getDpt",
+                            type: "GET",
+                            data: {
+                                nik: nik
+                            },
+                            success: function(response) {
+                                if (response) {
+                                    $('#nama').val(response.nama);
+                                    $('#rt').val(response.rt);
+                                    $('#rw').val(response.rw);
+                                    $('#jenis_kelamin').val(response.kelamin).change();
+                                } else {
+                                    $('#nama').val('');
+                                }
+                            }
+                        });
+                    } else {
+                        $('#nama').val('');
+                    }
+                });
             });
 
             function extractDateAndCalculateAge() {

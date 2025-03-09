@@ -50,7 +50,7 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <label class="form-label" for="name">Tanggal Lahir</label>
                         <input type="date" name="tgl_lahir" value="{{ old('tgl_lahir') }}" id="bs-validation-name"
                             class="form-control" placeholder="Masukan Nama" />
@@ -61,10 +61,10 @@
                     <div class="col-md-6">
                         <label for="kabkota_id" class="form-label">Kota Lahir</label>
                         <select class="form-select" name="kabkota_id" id="kabkota_id">
-                            {{-- <option selected>{{ old('kabkota_id', 'pilih kota lahir') }}</option>
+                            <option selected>{{ old('kabkota_id', 'pilih kota lahir') }}</option>
                             @foreach ($kabkota as $data)
                                 <option value="{{ $data->id }}">{{ $data->nama }}</option>
-                            @endforeach --}}
+                            @endforeach
                         </select>
                         @error('kabkota_id')
                             <div class="text-danger">{{ $message }}</div>
@@ -77,7 +77,7 @@
                         @error('alamat')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-username">RT</label>
                         <input type="number" name="rt" value="{{ old('rt') }}" id="multicol-username"

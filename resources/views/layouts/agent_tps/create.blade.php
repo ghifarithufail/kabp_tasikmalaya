@@ -36,14 +36,6 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label" for="phone">Telepon</label>
-                        <input type="number" name="phone" value="{{ old('phone') }}" id="phone" class="form-control"
-                            placeholder="Masukan No telpon" />
-                        @error('phone')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
                         <label class="form-label" for="nik">NIK</label>
                         <input type="number" name="nik" value="{{ old('nik') }}" id="nik" class="form-control"
                             placeholder="Masukan NIK" />
@@ -52,6 +44,14 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label" for="phone">Telepon</label>
+                        <input type="number" name="phone" value="{{ old('phone') }}" id="phone" class="form-control"
+                            placeholder="Masukan No telpon" />
+                        @error('phone')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    {{-- <div class="col-md-6">
                         <label class="form-label" for="name">Tanggal Lahir</label>
                         <input type="date" name="tgl_lahir" value="{{ old('tgl_lahir') }}" id="bs-validation-name"
                             class="form-control" placeholder="Masukan Nama" />
@@ -74,7 +74,7 @@
                         @error('alamat')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-username">RT</label>
                         <input type="number" name="rt" value="{{ old('rt') }}" id="multicol-username"

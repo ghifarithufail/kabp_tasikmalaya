@@ -55,7 +55,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/getWalkot', [DataController::class, 'getWalkot'])->name('getWalkot');
     Route::post('/getAgentTps', [DataController::class, 'getAgentTps'])->name('getAgentTps');
     Route::post('/getSuaraCalon', [DataController::class, 'getSuaraCalon'])->name('getSuaraCalon');
+    Route::get('/getDpt', [DataController::class, 'getDpt'])->name('getDpt');
     Route::get('/list_suara_calon', [PerolehanSuaraController::class, 'list_suara_calon'])->name('list_suara_calon');
+
 
 
     Route::group(['prefix' => 'koordinator', 'as' => 'koordinator/'], function () {
