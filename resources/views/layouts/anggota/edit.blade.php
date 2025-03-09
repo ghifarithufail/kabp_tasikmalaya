@@ -159,7 +159,7 @@
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-username">Keterangan</label>
                         <input type="text" value="{{ $anggota->keterangan }}" name="keterangan" id="multicol-username"
-                            class="form-control" placeholder="Keterangan" required disabled />
+                            class="form-control" placeholder="Keterangan"/>
                         @error('keterangan')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
