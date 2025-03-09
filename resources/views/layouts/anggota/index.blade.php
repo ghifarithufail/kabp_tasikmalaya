@@ -48,8 +48,6 @@
                         <th>KTP</th>
                         <th>Agen</th>
                         <th>Jenis Kelamin</th>
-                        <th>Usia</th>
-                        <th>Alamat</th>
                         <th>RT/RW</th>
                         <th>Kelurahan / kecamatan</th>
                         <th class="text-center">Tps</th>
@@ -70,8 +68,6 @@
                             <td>{{ $data->nik }}</td>
                             <td>{{ $data->agents->nama }}</td>
                             <td>{{ $data->jenis_kelamin }}</td>
-                            <td>{{ $data->usia }}</td>
-                            <td>{{ $data->alamat }}</td>
                             <td>{{ $data->rt }} / {{ $data->rw }}</td>
                             <td>
                                 {{ $data->tps->kelurahans->nama_kelurahan }} <br>
