@@ -31,7 +31,7 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <label class="form-label" for="name">Tanggal Lahir</label>
                         <input type="date" name="tgl_lahir" value="{{ $korlur->tgl_lahir }}" id="bs-validation-name"
                             class="form-control" placeholder="Masukan Nama" required />
@@ -55,7 +55,7 @@
                             @error('alamat')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-username">RT</label>
                         <input type="number" name="rt" value="{{ $korlur->rt }}" id="multicol-username"

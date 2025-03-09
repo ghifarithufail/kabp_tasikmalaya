@@ -52,7 +52,7 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <label class="form-label" for="name">Tanggal Lahir</label>
                         <input type="date" name="tgl_lahir" value="{{ $anggota->tgl_lahir }}" id="bs-validation-name"
                             class="form-control" placeholder="Masukan Nama" required />
@@ -84,7 +84,7 @@
                         @error('usia')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
                     <div class="col-md-6">
                         <label class="form-label" for="multicol-username">Jenis Kelamin</label>
                         <select class="form-select" name="jenis_kelamin" id="jenis_kelamin"
