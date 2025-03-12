@@ -22,6 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $blockedIps = ['180.252.120.122'];
+
+        if (in_array(request()->ip(), $blockedIps)) {
+            abort(403, "Access denied.");
+        }
+        
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
         date_default_timezone_set('Asia/Jakarta');
