@@ -27,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Asia/Jakarta');
         Paginator::useBootstrap();
         Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('config:cache');
     }
 }

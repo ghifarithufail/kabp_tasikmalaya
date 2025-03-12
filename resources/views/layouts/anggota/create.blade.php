@@ -29,9 +29,8 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label" for="nik">NIK</label>
-                            <input type="number" name="nik" value="{{ old('nik') }}"
-                                id="nik" oninput="extractDateAndCalculateAge()" class="form-control"
-                                placeholder="Masukan NIK" />
+                            <input type="number" name="nik" value="{{ old('nik') }}" id="nik"
+                                oninput="extractDateAndCalculateAge()" class="form-control" placeholder="Masukan NIK" />
                             @error('nik')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -136,30 +135,31 @@
             });
 
             $(document).ready(function() {
+                let typingTimer;
                 $('#nik').on('input', function() {
-                    var nik = $(this).val();
-
-                    if (nik.length >= 5) { // Minimal 5 karakter untuk mulai mencari
-                        $.ajax({
-                            url: "/getDpt",
-                            type: "GET",
-                            data: {
-                                nik: nik
-                            },
-                            success: function(response) {
-                                if (response) {
-                                    $('#nama').val(response.nama);
-                                    $('#rt').val(response.rt);
-                                    $('#rw').val(response.rw);
-                                    $('#jenis_kelamin').val(response.kelamin).change();
-                                } else {
-                                    $('#nama').val('');
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(function() {
+                        var nik = $('#nik').val();
+                        if (nik.length >= 15) {
+                            $.ajax({
+                                url: "/getDpt",
+                                type: "GET",
+                                data: {
+                                    nik: nik
+                                },
+                                success: function(response) {
+                                    if (response) {
+                                        $('#nama').val(response.nama);
+                                        $('#rt').val(response.rt);
+                                        $('#rw').val(response.rw);
+                                        $('#jenis_kelamin').val(response.kelamin).change();
+                                    } else {
+                                        $('#nama').val('');
+                                    }
                                 }
-                            }
-                        });
-                    } else {
-                        $('#nama').val('');
-                    }
+                            });
+                        }
+                    }, 500); // Tunggu 500ms sebelum request AJAX dikirim
                 });
             });
 
