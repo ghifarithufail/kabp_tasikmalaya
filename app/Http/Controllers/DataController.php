@@ -22,8 +22,8 @@ class DataController extends Controller
     {
         $kecamatan = [];
         // if (Auth::user()->role == '1') {
-            $kecamatan = Kecamatan::where('nama', 'LIKE', "%$request->name%")
-                ->get();
+        $kecamatan = Kecamatan::where('nama', 'LIKE', "%$request->name%")
+            ->get();
         // } else {
         //     $kecamatan = Kecamatan::where('nama', 'LIKE', "%$request->name%")
         //         ->whereHas('kelurahans', function ($kelurahans) {
@@ -44,18 +44,18 @@ class DataController extends Controller
     }
 
     public function getKabkotaById($id)
-{
-    // Cari kabkota berdasarkan id
-    $kabkota = Kabkota::find($id);
+    {
+        // Cari kabkota berdasarkan id
+        $kabkota = Kabkota::find($id);
 
-    // Jika kabkota tidak ditemukan, kembalikan respon kosong atau not found
-    if (!$kabkota) {
-        return response()->json(['error' => 'Kabkota not found'], 404);
+        // Jika kabkota tidak ditemukan, kembalikan respon kosong atau not found
+        if (!$kabkota) {
+            return response()->json(['error' => 'Kabkota not found'], 404);
+        }
+
+        // Kembalikan data kabkota dalam format JSON
+        return response()->json($kabkota);
     }
-
-    // Kembalikan data kabkota dalam format JSON
-    return response()->json($kabkota);
-}
 
 
     public function getKorcams(Request $request)
@@ -89,17 +89,17 @@ class DataController extends Controller
 
         // if ($search = $request->name) {
         // if (Auth::user()->role == '1') {
-            if ($search = $request->name) {
-                $korlur = AgentTps::with('kelurahans.kecamatans')
-                    // ->whereHas('kelurahans', function ($query) {
-                    //     $query->where('kabkota', 'like', '%' . 'kota tasikmalaya' . '%');
-                    // })
-                    ->where('nama', 'LIKE', "%$search%")
-                    ->where('deleted', '0')
-                    ->where('status', 1)
-                    // ->where('partai_id', Auth::user()->partai)
-                    ->get();
-            }
+        if ($search = $request->name) {
+            $korlur = AgentTps::with('kelurahans.kecamatans')
+                // ->whereHas('kelurahans', function ($query) {
+                //     $query->where('kabkota', 'like', '%' . 'kota tasikmalaya' . '%');
+                // })
+                ->where('nama', 'LIKE', "%$search%")
+                ->where('deleted', '0')
+                ->where('status', 1)
+                // ->where('partai_id', Auth::user()->partai)
+                ->get();
+        }
         // } else {
         //     $korlur = AgentTps::with('kelurahans.kecamatans')
         //         ->whereHas('kelurahans', function ($query) use ($search) {
@@ -121,14 +121,14 @@ class DataController extends Controller
         $search = $request->name;
 
         // if (Auth::user()->role == '1') {
-            if ($search = $request->name) {
-                $tps = Tps::with('kelurahans.kecamatans')
-                    ->whereHas('kelurahans', function ($query) use ($search) {
-                        $query->where('nama_kelurahan', 'LIKE', "%$search%");
-                    })
-                    // ->where('kelurahan_id', Auth::user()->kelurahan_id)
-                    ->get(['id', 'kelurahan_id', 'tps', 'totdpt', 'dptl', 'dptp', 'lokasi']);
-            }
+        if ($search = $request->name) {
+            $tps = Tps::with('kelurahans.kecamatans')
+                ->whereHas('kelurahans', function ($query) use ($search) {
+                    $query->where('nama_kelurahan', 'LIKE', "%$search%");
+                })
+                // ->where('kelurahan_id', Auth::user()->kelurahan_id)
+                ->get(['id', 'kelurahan_id', 'tps', 'totdpt', 'dptl', 'dptp', 'lokasi']);
+        }
         // } else {
         //     $tps = Tps::with('kelurahans.kecamatans')
         //         ->whereHas('kelurahans', function ($query) use ($search) {
@@ -142,14 +142,15 @@ class DataController extends Controller
         return response()->json($tps);
     }
 
-    public function getTpsById($id){
+    public function getTpsById($id)
+    {
         // Cari kabkota berdasarkan id
         $tps = DB::table('tps')
-        ->leftJoin('kelurahans', 'kelurahans.id', '=', 'tps.kelurahan_id')
-        ->leftJoin('kecamatans', 'kecamatans.id', '=', 'kelurahans.kecamatan_id')
-        ->where('tps.id', $id)
-        ->select(DB::raw('tps.*, kelurahans.nama_kelurahan as kelurahan_nama, kecamatans.nama as kecamatan_nama'))
-        ->first();
+            ->leftJoin('kelurahans', 'kelurahans.id', '=', 'tps.kelurahan_id')
+            ->leftJoin('kecamatans', 'kecamatans.id', '=', 'kelurahans.kecamatan_id')
+            ->where('tps.id', $id)
+            ->select(DB::raw('tps.*, kelurahans.nama_kelurahan as kelurahan_nama, kecamatans.nama as kecamatan_nama'))
+            ->first();
 
         // Jika kabkota tidak ditemukan, kembalikan respon kosong atau not found
         if (!$tps) {
@@ -172,11 +173,12 @@ class DataController extends Controller
         return response()->json($tps);
     }
 
-    public function getAllKelurahans(){
+    public function getAllKelurahans()
+    {
         $kelurahan = DB::table('kelurahans')->get();
         return response()->json($kelurahan);
     }
-    
+
     public function getKelurahans(Request $request)
     {
         $kelurahan = [];
@@ -202,8 +204,14 @@ class DataController extends Controller
         return response()->json($suaraCalon);
     }
 
-    public function getDpt(Request $request){
-        $dpt = Dpt::where('nik', $request->nik)->first();
-        return response()->json($dpt);
+    public function getDpt(Request $request)
+    {
+        try {
+            $connection = DB::connection();
+            $dpt = $connection->table('dpts')->where('nik', $request->nik)->first();
+            return response()->json($dpt);
+        } finally {
+            $connection->disconnect(); // Pastikan koneksi ditutup
+        }
     }
 }
