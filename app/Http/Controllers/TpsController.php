@@ -29,7 +29,7 @@ class TpsController extends Controller
 
         // $tim = Partai::orderBy('id', 'asc')->get();
         $tim = Cache::remember('tim', 3600, function () {
-            return Partai::orderBy('id', 'asc')->get();
+            return Partai::where('deleted', '=', '0')->orderBy('id', 'asc')->get();
         });
 
         $kelurahan = $request->input('kelurahan');
@@ -91,9 +91,9 @@ class TpsController extends Controller
         if (in_array('kabupaten-garut report/tps', $userPermissions)) {
             $allowedRegions[] = 'GARUT';
         }
-        
+
         if (!empty($allowedRegions)) {
-            $data->whereIn('kabkotas.nama', $allowedRegions);    
+            $data->whereIn('kabkotas.nama', $allowedRegions);
         }
 
         $tps = $data->paginate(20)->appends($request->all());
@@ -108,9 +108,9 @@ class TpsController extends Controller
             ],
         ]);
     }
-    
+
     public function excel_report(){
-        
+
         return Excel::download(new TpsExport(), 'tps.xlsx');
 
     }
