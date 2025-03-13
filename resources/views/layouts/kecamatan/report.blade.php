@@ -67,6 +67,7 @@
                 },
                 dataType: 'json',
                 success: function(data) {
+                    console.log(data);
                     // Update tampilan dengan data yang diterima
                     $('#report').html(data.data);
                 },

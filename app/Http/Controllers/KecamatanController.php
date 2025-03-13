@@ -22,10 +22,9 @@ class KecamatanController extends Controller
     {
 
         // Ambil semua partai
-        $partais = DB::table('partais')->select('id', 'nama')->where('deleted', '=', '0')->OrderBy('id', 'asc')->get();
+        // $partais = DB::table('partais')->select('id', 'nama')->where('deleted', '=', '0')->OrderBy('id', 'asc')->get();
 
-        $tim = Partai::orderBy('id', 'asc')->get();
-       
+        $tim = Partai::where('deleted', '=', '0')->orderBy('id', 'asc')->get();
 
 
         return view('layouts.kecamatan.report', [
@@ -38,9 +37,9 @@ class KecamatanController extends Controller
 
         $userPermissions = auth()->user()->getAllPermissions()->pluck('name')->toArray();
 
-        $partais = DB::table('partais')->select('id', 'nama')->OrderBy('id', 'asc')->get();
+        $partais = DB::table('partais')->where('deleted', '=', '0')->select('id', 'nama')->OrderBy('id', 'asc')->get();
 
-        $tim = Partai::orderBy('id', 'asc')->get();
+        $tim = Partai::where('deleted', '=', '0')->orderBy('id', 'asc')->get();
 
         // Inisialisasi query dasar
         $kecamatans = Kecamatan::leftJoin('kelurahans', 'kelurahans.kecamatan_id', '=', 'kecamatans.id')
@@ -58,7 +57,7 @@ class KecamatanController extends Controller
                 DB::raw('COUNT(CASE WHEN anggotas.verified = "1" THEN anggotas.id END) as total_verified_anggota'),
                 'kelurahans.dapil'
             );
-            
+
         $allowedRegions = [];
         if (in_array('kota-tasikmalaya report/kecamatan', $userPermissions)) {
             $allowedRegions[] = 'TASIKMALAYA';
@@ -73,7 +72,7 @@ class KecamatanController extends Controller
         if (!empty($allowedRegions)) {
             $kecamatans->whereIn('kabkotas.nama', $allowedRegions);
         }
-        
+
 
         // Tambahkan COUNT untuk setiap partai secara dinamis
         foreach ($partais as $partai) {
