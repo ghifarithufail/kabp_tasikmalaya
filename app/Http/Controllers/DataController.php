@@ -208,7 +208,7 @@ class DataController extends Controller
     {
         try {
             $connection = DB::connection();
-            $dpt = $connection->table('dpts')->where('nik', $request->nik)->first();
+            $dpt = $connection->table('dpts_tsm')->where('nik', $request->nik)->first();
             return response()->json($dpt);
         } finally {
             $connection->disconnect(); // Pastikan koneksi ditutup
