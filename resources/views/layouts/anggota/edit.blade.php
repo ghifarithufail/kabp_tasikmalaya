@@ -128,7 +128,7 @@
                         @error('agent_id')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div> 
+                    </div>
                     <div class="col-md-6">
                         <label class="form-label" for="tps_id">Tps</label>
                         <select class="form-select" name="tps_id" id="tps_id" required>

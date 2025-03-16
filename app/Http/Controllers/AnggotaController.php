@@ -305,7 +305,7 @@ class AnggotaController extends Controller
             'alamat' => 'nullable',
             'rt' => 'required',
             'rw' => 'required',
-            // 'agent_id' => 'required',
+            'agent_id' => 'required',
             'phone' => 'required',
             'status' => 'required',
             'jenis_kelamin' => 'required',
