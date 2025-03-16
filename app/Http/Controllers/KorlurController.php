@@ -282,7 +282,7 @@ class KorlurController extends Controller
         $kelurahan = $request->input('kelurahan');
         $partai = $request->input('partai');
 
-        $partais = Partai::orderBy('nama', 'asc')->get();
+        $partais = Partai::where('deleted', '0')->orderBy('nama', 'asc')->get();
 
         $data = Korlur::where('deleted','0')
         ->whereHas('korcams', function ($q){

@@ -24,7 +24,7 @@ class KelurahanController extends Controller
         $userPermissions = auth()->user()->getAllPermissions()->pluck('name')->toArray();
 
         $partais = DB::table('partais')->select('id', 'nama')->where('deleted', '=', '0')->orderBy('id', 'asc')->get();
-        $tim = Partai::orderBy('id', 'asc')->get();
+        $tim = Partai::where('deleted', '0')->orderBy('id', 'asc')->get();
 
         $kelurahans = Kelurahan::leftJoin('kecamatans', 'kecamatans.id', '=', 'kelurahans.kecamatan_id')
             ->leftJoin('tps', 'tps.kelurahan_id', '=', 'kelurahans.id')
@@ -75,11 +75,11 @@ class KelurahanController extends Controller
         if (in_array('kabupaten-garut report/kelurahan', $userPermissions)) {
             $allowedRegions[] = 'GARUT';
         }
-        
+
         if (!empty($allowedRegions)) {
-            $kelurahans->whereIn('kabkotas.nama', $allowedRegions);    
+            $kelurahans->whereIn('kabkotas.nama', $allowedRegions);
         }
-        
+
         // Mengelompokkan data berdasarkan id kelurahan, nama kelurahan, dapil, dan kabkota
         $kelurahan = $kelurahans->groupBy('kelurahans.id', 'kelurahans.nama_kelurahan', 'kelurahans.dapil', 'kabkotas.nama')->get();
 

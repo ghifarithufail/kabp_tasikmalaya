@@ -29,7 +29,7 @@ class TpsController extends Controller
 
         // $tim = Partai::orderBy('id', 'asc')->get();
         $tim = Cache::remember('tim', 3600, function () {
-            return Partai::orderBy('id', 'asc')->get();
+            return Partai::where('deleted', '=', '0')->orderBy('id', 'asc')->get();
         });
 
         $kelurahan = $request->input('kelurahan');
@@ -91,9 +91,9 @@ class TpsController extends Controller
         if (in_array('kabupaten-garut report/tps', $userPermissions)) {
             $allowedRegions[] = 'GARUT';
         }
-        
+
         if (!empty($allowedRegions)) {
-            $data->whereIn('kabkotas.nama', $allowedRegions);    
+            $data->whereIn('kabkotas.nama', $allowedRegions);
         }
 
         $tps = $data->paginate(20)->appends($request->all());
@@ -108,9 +108,9 @@ class TpsController extends Controller
             ],
         ]);
     }
-    
+
     public function excel_report(){
-        
+
         return Excel::download(new TpsExport(), 'tps.xlsx');
 
     }
@@ -125,6 +125,7 @@ class TpsController extends Controller
             ->select(
                 'pivot_agents.agent_tps_id',
                 'pivot_agents.tps_id',
+                'agent_tps.id AS id_agent',
                 'agent_tps.nama AS nama_agent',
                 'agent_tps.nik',
                 'agent_tps.phone',
@@ -135,7 +136,9 @@ class TpsController extends Controller
                 'agent_tps.status',
                 'partais.nama AS nama_partai'
             )
+            ->where('agent_tps.id', '!=', 'null')
             ->get();
+
 
         $tps = Tps::where('tps.id', '=', $id)->leftJoin('kelurahans', 'kelurahans.id', '=', 'tps.kelurahan_id')->select('tps.tps AS nama_tps', 'kelurahans.nama_kelurahan')->get();
 
