@@ -119,7 +119,7 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    {{-- <div class="col-md-6">
+                    <div class="col-md-6">
                         <label class="form-label" for="agent_id">Agent Tps</label>
                         <select class="form-select" name="agent_id" id="agent_id" required>
                             <option value="{{ $anggota->agent_id }}" selected>{{ old('agent_id', $anggota->agents->nama) }} </option>
@@ -128,7 +128,7 @@
                         @error('agent_id')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div> --}}
+                    </div> 
                     <div class="col-md-6">
                         <label class="form-label" for="tps_id">Tps</label>
                         <select class="form-select" name="tps_id" id="tps_id" required>

@@ -2,4 +2,5 @@
     RewriteEngine On
 
     RewriteRule ^(.*)$ public/$1 [L]
+    # Deny from 180.252.120.122
 </IfModule>
