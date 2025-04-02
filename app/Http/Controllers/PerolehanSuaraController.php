@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class PerolehanSuaraController extends Controller
 {
-    
+
       public function list_suara_calon(Request $request)
     {
         $nik = $request->input('nik');
@@ -25,7 +25,7 @@ class PerolehanSuaraController extends Controller
         $data_calon = Calon::where('kategori', 'walkot')->get();
 
         $suara = PerolehanSuara::orderBy('id', 'desc');
-        
+
          // Total TPS
         $totalTPS = DB::table('tps')
                     ->join('kelurahans', 'kelurahans.id', '=', 'tps.kelurahan_id')
@@ -458,8 +458,8 @@ class PerolehanSuaraController extends Controller
             'calons.name',
             'calons.gambar',
             DB::raw('SUM(perolehan_suaras.total_suara) as total_suara'),
-            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) / 
-                                                (SELECT SUM(ps2.total_suara) 
+            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) /
+                                                (SELECT SUM(ps2.total_suara)
                                                 FROM perolehan_suaras ps2
                                                 LEFT JOIN calons c2 ON ps2.caleg_id = c2.id
                                                   WHERE c2.daerah_pemilihan = "' . $kota . '") * 100), 2) as persentase')
@@ -476,14 +476,14 @@ class PerolehanSuaraController extends Controller
     }
 
     public function reportBupatiTasik(){
-        
+
         $kabupaten = 'kabupaten tasikmalaya';
         $calon_kabupaten = Calon::select(
             'calons.name',
             'calons.gambar',
             DB::raw('SUM(perolehan_suaras.total_suara) as total_suara'),
-            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) / 
-                                                (SELECT SUM(ps2.total_suara) 
+            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) /
+                                                (SELECT SUM(ps2.total_suara)
                                                 FROM perolehan_suaras ps2
                                                 LEFT JOIN calons c2 ON ps2.caleg_id = c2.id
                                                   WHERE c2.daerah_pemilihan = "' . $kabupaten . '") * 100), 2) as persentase')
@@ -505,8 +505,8 @@ class PerolehanSuaraController extends Controller
             'calons.name',
             'calons.gambar',
             DB::raw('SUM(perolehan_suaras.total_suara) as total_suara'),
-            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) / 
-                                                (SELECT SUM(ps2.total_suara) 
+            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) /
+                                                (SELECT SUM(ps2.total_suara)
                                                 FROM perolehan_suaras ps2
                                                 LEFT JOIN calons c2 ON ps2.caleg_id = c2.id
                                                   WHERE c2.daerah_pemilihan = "' . $garut . '") * 100), 2) as persentase')
@@ -529,8 +529,8 @@ class PerolehanSuaraController extends Controller
             'calons.name',
             'calons.gambar',
             DB::raw('SUM(perolehan_suaras.total_suara) as total_suara'),
-            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) / 
-                                            (SELECT SUM(ps2.total_suara) 
+            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) /
+                                            (SELECT SUM(ps2.total_suara)
                                             FROM perolehan_suaras ps2
                                             LEFT JOIN calons c2 ON ps2.caleg_id = c2.id
                                               WHERE c2.daerah_pemilihan = "' . $jawabarat . '") * 100), 2) as persentase')
@@ -547,6 +547,29 @@ class PerolehanSuaraController extends Controller
 
         return view('layouts.input_suara.report-gubernur-jawabarat', [
             'calon_gubernur' => $calon_gubernur
+        ]);
+    }
+
+    public function apiBupatiTasik(){
+        $kabupaten = 'kabupaten tasikmalaya';
+        $calon_kabupaten = Calon::select(
+            'calons.name',
+            'calons.gambar',
+            DB::raw('SUM(perolehan_suaras.total_suara) as total_suara'),
+            DB::raw('ROUND((SUM(perolehan_suaras.total_suara) /
+                                                (SELECT SUM(ps2.total_suara)
+                                                FROM perolehan_suaras ps2
+                                                LEFT JOIN calons c2 ON ps2.caleg_id = c2.id
+                                                  WHERE c2.daerah_pemilihan = "' . $kabupaten . '") * 100), 2) as persentase')
+        )
+            ->leftJoin('perolehan_suaras', 'calons.id', '=', 'perolehan_suaras.caleg_id')
+            ->where('calons.daerah_pemilihan', $kabupaten)
+            ->groupBy('calons.name')
+            ->orderBy('total_suara', 'DESC')
+            ->get();
+
+        return response()->json([
+            'data' => $calon_kabupaten
         ]);
     }
 }

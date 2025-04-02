@@ -1,5 +1,7 @@
 @extends('main')
 @section('content')
+    <!-- Menyisipkan CSS untuk ApexCharts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.css">
     <div class="card text-center">
         <h5 class="card-header">Perolehan Suara Bupati Tasikmalaya</h5>
     </div>
@@ -16,7 +18,7 @@
         </div>
     </div>
 
-    <div class="card mt-2 p-4">
+    {{-- <div class="card mt-2 p-4">
         <div class="row mb-12 g-4 mt-4">
             @foreach ($calon_kabupaten as $data)
                 <div class="col-md-4">
@@ -39,11 +41,29 @@
                 </div>
             @endforeach
         </div>
+    </div> --}}
+
+    <div class="card mt-2 p-4 justify-content-center align-items-center">
+        <div class="row me-auto">
+            <h4><strong>Quick Count</strong></h4>
+            <p>Total Perolehan Suara saat ini</p>
+        </div>
+
+        <div class="card-body">
+            <div class="row ">
+                <div id="chart"></div>
+            </div>
+
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.js"></script>
 
     <script>
+        var apiUrl = '/report-bupati-tasik';
+        var options;
+
         $.ajax({
             url: "{{ route('fetch-geojson-kabupaten-tasik') }}",
             type: 'GET',
@@ -143,5 +163,107 @@
                 mapKabupatenTasik.setOption(option);
             });
 
+
+        // Function to fetch data and update the chart
+        function fetchDataAndUpdateChart() {
+            $.ajax({
+                url: apiUrl,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Extract data from the response
+                    var data = response.data;
+                    var newSeries = [];
+                    var newLabels = [];
+
+                    // Populate series and labels arrays
+                    data.forEach(function(item) {
+                        let totalSuara = item.total_suara ? item.total_suara : 0;
+                        newSeries.push(totalSuara);
+                        newLabels.push(item.name);
+                    });
+
+                    // Check if the data has changed
+                    if (JSON.stringify(newSeries) !== JSON.stringify(options.series) || JSON.stringify(
+                            newLabels) !== JSON.stringify(options.labels)) {
+                        // Update the chart options with new data
+                        options.series = newSeries;
+                        options.labels = newLabels;
+
+                        // Update the chart with new data
+                        chart.updateOptions(options);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error('Error fetching data:', error);
+                    alert('Failed to load data. Please try again later.');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+
+            $.ajax({
+                url: apiUrl,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response)
+                    // Extract data from the response
+                    var data = response.data;
+                    var series = [];
+                    var labels = [];
+
+                    // Populate series and labels arrays
+                    data.forEach(function(item) {
+                        let totalSuara = item.total_suara ? item.total_suara : 0;
+                        series.push(totalSuara);
+                        labels.push(item.name);
+                    });
+
+                    // Define the chart options
+                    options = {
+                        chart: {
+                            type: 'pie', // Menentukan jenis chart
+                            width: 820, // Lebar chart
+                            dropShadow: {
+                                enabled: true,
+                            }
+                        },
+                        series: series, // Data series untuk pie chart
+                        labels: labels, // Label untuk setiap bagian pie
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }]
+                    };
+                    var chart = new ApexCharts(document.querySelector("#chart"), options)
+
+                    // Render the chart
+                    chart.render();
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error('Error fetching data:', error);
+                    alert('Failed to load data. Please try again later.');
+                }
+            });
+
+            // Fetch data and update the chart every 5 seconds (5000 milliseconds)
+            var intervalId = window.setInterval(fetchDataAndUpdateChart, 5000);
+
+            // Optional: Clear the interval if needed (e.g., on page unload)
+            $(window).on('beforeunload', function() {
+                clearInterval(intervalId);
+            });
+        });
     </script>
 @endsection

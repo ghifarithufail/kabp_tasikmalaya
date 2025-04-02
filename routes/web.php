@@ -41,6 +41,8 @@ Route::get('/login', [AuthController::class, 'login'])->name('login')->middlewar
 Route::post('/login/store', [AuthController::class, 'store'])->name('store');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+Route::get('/report-bupati-tasik', [PerolehanSuaraController::class, 'apiBupatiTasik']);
+
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/getKecamatan', [DataController::class, 'getKecamatans'])->name('getKecamatan');
     Route::post('/getKabkotas', [DataController::class, 'getKabkotas'])->name('getKabkotas');
@@ -88,7 +90,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/destroy/{id}', [AgentTpsController::class, 'destroy'])->name('agent/destroy');
             Route::get('/add_koordinator/{id}', [AgentTpsController::class, 'add_koordinator'])->name('agent/add_koordinator');
         });
-        
+
         Route::prefix('anggota')->group(function () {
             Route::get('/', [AnggotaController::class, 'index'])->name('anggota');
             Route::get('/create', [AnggotaController::class, 'create'])->name('anggota/create');
@@ -136,7 +138,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/kecamatan/{id}', [KecamatanController::class, 'detailReport'])->name('kecamatan/detail');
         Route::get('/kecamatan/download/export', [KecamatanController::class, 'excel_report'])->name('kecamatan/excel/donwload');
 
-        
+
         //KELURAHAN REPORT
         Route::get('/kelurahan', [KelurahanController::class, 'report'])->name('kelurahan');
         Route::get('/kelurahan/{id}', [KelurahanController::class, 'reportDetail'])->name('kelurahan/detail');
@@ -151,7 +153,7 @@ Route::group(['middleware' => ['auth']], function () {
         // WALI KOTA TASIK REPORT
         Route::get('/walkot-tasik', [PerolehanSuaraController::class, 'reportWalkotTasik'])->name('reportWalkotTasik');
 
-        // BUPATI TASIK REPORT 
+        // BUPATI TASIK REPORT
         Route::get('/bupati-tasik', [PerolehanSuaraController::class, 'reportBupatiTasik'])->name('reportBupatiTasik');
 
         // BUPATI GARUT REPORT
@@ -267,7 +269,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/store', [PerolehanSuaraController::class, 'storeGubernurJawaBarat'])->name('gubernur-jawa-barat/store');
         });
 
-        
+
     });
 
 });
