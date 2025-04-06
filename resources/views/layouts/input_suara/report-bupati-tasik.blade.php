@@ -233,6 +233,7 @@
                         },
                         series: series, // Data series untuk pie chart
                         labels: labels, // Label untuk setiap bagian pie
+                        colors: ['#fc0303','#00E396', '#feb219'],
                         responsive: [{
                             breakpoint: 480,
                             options: {
