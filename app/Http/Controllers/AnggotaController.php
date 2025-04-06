@@ -76,6 +76,7 @@ class AnggotaController extends Controller
     }
 
     public function report(Request $request){
+        $auth = Auth::user();
         $nik = $request->input('nik');
         $agent = $request->input('agent');
         $kelurahan = $request->input('kelurahan');
@@ -127,6 +128,7 @@ class AnggotaController extends Controller
             'anggota' => $anggota,
             'partai' => $partai,
             'user_role' => $user_role,
+            'auth' => $auth,
             'menu' => 'koordinator',
             'subMenu' => 'anggota',
             'request' => [

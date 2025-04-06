@@ -34,9 +34,11 @@
         </div>
     </div>
     <div class="card mt-4">
-        <div class="card-header d-flex justify-content-end" style="zoom: 0.8">
-            <a href="{{ route('report/korlur/general/excel') }}" type="button" class="btn btn-success ">Excel</a>
-        </div>
+        @if ($auth->role == 1 || $auth->role == 2)
+            <div class="card-header d-flex justify-content-end" style="zoom: 0.8">
+                <a href="{{ route('report/korlur/general/excel') }}" type="button" class="btn btn-success ">Excel</a>
+            </div>
+        @endif
         <div class="table-responsive text-nowrap">
             <table class="table table-hover" style="zoom: 0.75">
                 <thead>

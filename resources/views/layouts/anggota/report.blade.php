@@ -43,9 +43,11 @@
     </div>
     <div class="card mt-4">
         <div class="table-responsive text-nowrap">
-            <div class="card-header d-flex justify-content-end" style="zoom: 0.8">
-                <a href="{{ route('report/anggota/excel') }}" class="btn btn-success me-2">Export</a>
-            </div>
+            @if ($auth->role == 1 || $auth->role == 2)
+                <div class="card-header d-flex justify-content-end" style="zoom: 0.8">
+                    <a href="{{ route('report/anggota/excel') }}" class="btn btn-success me-2">Export</a>
+                </div>
+            @endif
             <table class="table table-hover" style="zoom: 0.75">
                 <thead>
                     <tr>

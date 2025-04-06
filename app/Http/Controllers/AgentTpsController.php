@@ -336,6 +336,7 @@ class AgentTpsController extends Controller
         //         $q->where('deleted', '0');
         //     }])->get();
 
+        $auth = Auth::user();
         $nik = $request->input('nik');
         $korlur = $request->input('korlur');
         $kelurahan = $request->input('kelurahan');
@@ -421,6 +422,7 @@ class AgentTpsController extends Controller
         return view('layouts.agent_tps.report', [
             'agent' => $agent,
             'partais' => $partais,
+            'auth' => $auth,
             'request' => [
                 'nik' => $nik,
                 'korlur' => $korlur,

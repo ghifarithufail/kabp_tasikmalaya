@@ -277,6 +277,7 @@ class KorlurController extends Controller
 
     public function report(Request $request){
 
+        $auth = Auth::user();
         $nik = $request->input('nik');
         $korcam = $request->input('korcam');
         $kelurahan = $request->input('kelurahan');
@@ -316,6 +317,7 @@ class KorlurController extends Controller
         return view('layouts.korlur.report',[
             'korlur' => $korlur,
             'partais' => $partais,
+            'auth' => $auth,
             'request' => [
                 'nik' => $nik,
                 'korcam' => $korcam,

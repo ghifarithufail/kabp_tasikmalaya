@@ -10,6 +10,7 @@ use App\Models\Partai;
 use App\Models\Kabkota;
 use App\Models\Kecamatan;
 use App\Models\LogKorcam;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -272,6 +273,7 @@ class KorcamController extends Controller
 
     public function report(Request $request)
     {
+        $auth = Auth::user();
         $nik = $request->input('nik');
         $kecamatan = $request->input('kecamatan');
         $partai = $request->input('partai');
@@ -299,6 +301,7 @@ class KorcamController extends Controller
 
         return view('layouts.korcam.report', [
             'korcam' => $korcam,
+            'auth' => $auth,
             'partais' => $partais,
             'menu' => 'report',
             'subMenu' => 'report_korcam',
