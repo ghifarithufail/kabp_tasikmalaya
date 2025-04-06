@@ -148,13 +148,18 @@
                                     nik: nik
                                 },
                                 success: function(response) {
-                                    if (response) {
-                                        $('#nama').val(response.nama);
-                                        $('#rt').val(response.rt);
-                                        $('#rw').val(response.rw);
-                                        $('#jenis_kelamin').val(response.kelamin).change();
+                                    if (response.data) {
+                                        $('#nama').val(response.data.nama);
+                                        $('#rt').val(response.data.rt);
+                                        $('#rw').val(response.data.rw);
+                                        $('#jenis_kelamin').val(response.data.kelamin)
+                                            .change();
                                     } else {
                                         $('#nama').val('');
+                                    }
+
+                                    if (response.nik_exists) {
+                                        alert("NIK ini sudah terdaftar di data anggota!");
                                     }
                                 }
                             });
@@ -162,6 +167,7 @@
                     }, 500); // Tunggu 500ms sebelum request AJAX dikirim
                 });
             });
+
 
             function extractDateAndCalculateAge() {
                 const nik = document.getElementById("nik").value;

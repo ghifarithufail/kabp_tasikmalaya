@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AgentTps;
+use App\Models\Anggota;
 use App\Models\Calon;
 use App\Models\Dpt;
 use App\Models\Kabkota;
@@ -208,10 +209,17 @@ class DataController extends Controller
     {
         try {
             $connection = DB::connection();
+
+            $anggotaExists = Anggota::where('nik', $request->nik)->exists();
+
             $dpt = $connection->table('dpts_tsm')->where('nik', $request->nik)->first();
-            return response()->json($dpt);
+
+            return response()->json([
+                'data' => $dpt,
+                'nik_exists' => $anggotaExists
+            ]);
         } finally {
-            $connection->disconnect(); // Pastikan koneksi ditutup
+            $connection->disconnect(); // Tutup koneksi
         }
     }
 }
