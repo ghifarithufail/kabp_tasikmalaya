@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="card mt-4">
-        @if ($auth->role == 1 || $auth->role == 2)
+        @if ($auth->role == 1 || $auth->role == 2 || $auth->role == 5)
         <div class="card-header d-flex justify-content-end" style="zoom: 0.8">
             <a href="{{ route('report/korlur/general/excel') }}" type="button" class="btn btn-success ">Excel</a>
         </div>
