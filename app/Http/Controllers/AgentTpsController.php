@@ -281,9 +281,11 @@ class AgentTpsController extends Controller
 
         if ($oldAgent->korlur_id != $agent->korlur_id) {
             $oldkorlur = Korlur::find($oldAgent->korlur_id)->nama;
-            $korlur = Korlur::find($agent->korlur_id)->nama;
+            if($oldkorlur){
+                $korlur = Korlur::find($agent->korlur_id)->nama;
 
-            $changes[] = 'korlur from ' . $oldkorlur . ' to ' . $korlur;
+                $changes[] = 'korlur from ' . $oldkorlur . ' to ' . $korlur;
+            }
         }
 
         $oldTPS = $oldAgent->tps_pivot->pluck('id')->toArray();

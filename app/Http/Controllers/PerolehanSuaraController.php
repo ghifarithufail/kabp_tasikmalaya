@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\PerolehanKabutenTasikmalayaDatatables;
 use App\DataTables\PerolehanKotaTasikmalayaDatatables;
 use App\Models\Calon;
 use App\Models\LogInputSuara;
@@ -475,7 +476,7 @@ class PerolehanSuaraController extends Controller
         ]);
     }
 
-    public function reportBupatiTasik(){
+    public function reportBupatiTasik(PerolehanKabutenTasikmalayaDatatables $datatable){
 
         $kabupaten = 'kabupaten tasikmalaya';
         $calon_kabupaten = Calon::select(
@@ -494,7 +495,7 @@ class PerolehanSuaraController extends Controller
             ->orderBy('total_suara', 'DESC')
             ->get();
 
-        return view('layouts.input_suara.report-bupati-tasik', [
+        return $datatable->render('layouts.input_suara.report-bupati-tasik', [
             'calon_kabupaten' => $calon_kabupaten
         ]);
     }

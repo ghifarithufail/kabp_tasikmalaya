@@ -57,6 +57,14 @@
         </div>
     </div>
 
+    <div class="card mt-2">
+        <div class="card-body">
+            {!! $dataTable->table() !!}
+        </div>
+    </div>
+
+    {!! $dataTable->scripts() !!}
+
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.35.3/dist/apexcharts.min.js"></script>
 
@@ -235,14 +243,15 @@
                         labels: labels, // Label untuk setiap bagian pie
                         colors: ['#fc0303','#00E396', '#feb219'],
                         responsive: [{
-                            breakpoint: 480,
+                            breakpoint: 600,
                             options: {
-                                chart: {
-                                    width: 200
-                                },
-                                legend: {
-                                    position: 'bottom'
-                                }
+                            chart: {
+                                width: '100%',
+                                height: 300
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
                             }
                         }]
                     };
